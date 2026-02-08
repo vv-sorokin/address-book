@@ -1,0 +1,20 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.user
+*.suo
+
+# .NET
+backend/**/bin/
+backend/**/obj/
+backend/**/.vs/
+
+# Node / Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/cache/
+
+# Env
+.env
