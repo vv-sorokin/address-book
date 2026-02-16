@@ -1,6 +1,8 @@
-﻿namespace AddressBook.Domain.Entities;
+﻿using AddressBook.Domain.Common;
 
-public class User
+namespace AddressBook.Domain.Entities;
+
+public class User : BaseEntity
 {
     private User() { }
 
