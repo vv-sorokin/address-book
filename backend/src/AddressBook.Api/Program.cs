@@ -1,10 +1,13 @@
+using AddressBook.Application.Auth;
 using AddressBook.Application.Common.Interfaces;
+using AddressBook.Domain.Interfaces;
 using AddressBook.Infrastructure.Auth;
 using AddressBook.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
+using AddressBook.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -22,10 +25,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // JWT token generator
-builder.Services.AddScoped<JwtTokenGenerator>();
+builder.Services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
 
 // Password hashing service
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
 
 
 

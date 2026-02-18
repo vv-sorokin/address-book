@@ -4,10 +4,11 @@ using System.Security.Claims;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using AddressBook.Application.Common.Interfaces;
 
 namespace AddressBook.Infrastructure.Auth;
 
-public class JwtTokenGenerator
+public class JwtTokenGenerator : ITokenGenerator
 {
     private readonly IConfiguration _config;
 

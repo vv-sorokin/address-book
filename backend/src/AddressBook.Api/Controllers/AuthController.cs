@@ -1,10 +1,5 @@
-﻿using AddressBook.Application.Common.Interfaces;
-using AddressBook.Infrastructure.Auth;
-using AddressBook.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Http;
+﻿using AddressBook.Application.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace AddressBook.Api.Controllers
 {
@@ -12,36 +7,62 @@ namespace AddressBook.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AppDbContext _db;
-        private readonly JwtTokenGenerator _tokens;
-        private readonly IPasswordHasher _hasher;
 
-        public AuthController(AppDbContext db, JwtTokenGenerator tokens, IPasswordHasher hasher)
+
+        private readonly IAuthService _auth;
+
+        public AuthController(IAuthService auth)
         {
-            _db = db;
-            _tokens = tokens;
-            _hasher = hasher;
+            _auth = auth;
         }
 
-        public record LoginRequest(string Email, string Password);
-        public record LoginResponse(string AccessToken);
+        
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request , CancellationToken ct)
         {
-            var email = request.Email?.Trim();
-            var password = request.Password?.Trim();
-
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(request.Password))
-                return BadRequest("Email and password are required. ");
-
-            var user = await _db.Users.SingleOrDefaultAsync(x => x.Email == email, ct);
-
-            if (user == null || !_hasher.Verify(request.Password, user.PasswordHash))
+            try
+            {
+                var result = await _auth.LoginAsync(request, ct);
+                return Ok(new
+                {
+                    accessToken = result.AuthToken,
+                    user = new { id = result.UserId, email = result.Email, role = result.Role }
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (UnauthorizedAccessException)
+            {
                 return Unauthorized();
+            }
+        }
 
-            var token = _tokens.Generate(user);
-            return Ok(token);
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register( RegisterRequest request, CancellationToken ct)
+        {
+            try
+            {
+                var result = await _auth.RegisterAsync(request, ct);
+                return Ok(new
+                {
+                    accessToken = result.AuthToken,
+                    user = new { id = result.UserId, email = result.Email, role = result.Role }
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message);
+            }
         }
     }
+
+    
 }
