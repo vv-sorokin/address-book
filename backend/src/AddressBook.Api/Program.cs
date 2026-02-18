@@ -59,6 +59,13 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var users = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+    var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+
+    await DbSeeder.SeedAsync(users, hasher, CancellationToken.None);
+}
 
 
 // Configure the HTTP request pipeline.
