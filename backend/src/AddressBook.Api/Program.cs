@@ -41,7 +41,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, AddressBook.Api.Auth.CurrentUser>();
 
-
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 
