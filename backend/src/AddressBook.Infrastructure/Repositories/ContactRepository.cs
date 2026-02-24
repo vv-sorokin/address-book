@@ -42,4 +42,7 @@ public class ContactRepository :IContactRepository
         _db.Contacts.Remove(contact);
         return Task.CompletedTask;
     }
+
+    public Task SaveChangesAsync(CancellationToken ct) =>
+        _db.SaveChangesAsync(ct);
 }
