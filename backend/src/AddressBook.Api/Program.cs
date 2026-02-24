@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 using AddressBook.Api.Auth;
+using AddressBook.Application.Contacts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -42,6 +44,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, AddressBook.Api.Auth.CurrentUser>();
 
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
+
+builder.Services.AddScoped<IContactsService, ContactsService>();
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 

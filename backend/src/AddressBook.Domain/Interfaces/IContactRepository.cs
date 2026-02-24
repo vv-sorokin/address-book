@@ -10,5 +10,5 @@ public interface IContactRepository
     Task UpdateAsync(Contact contact, CancellationToken ct);
     Task DeleteAsync(Contact contact, CancellationToken ct);
 
-
+    Task SaveChangesAsync(CancellationToken ct);
 }
