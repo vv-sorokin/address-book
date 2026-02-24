@@ -10,6 +10,8 @@ public static class DbSeeder
 {
     public static async Task SeedAsync(IUserRepository users,IPasswordHasher hasher, CancellationToken ct)
     {
+        // create default admin user for development
+
         var adminEmail = "admin@local";
         var adminPassword = "Admin123!";
 
