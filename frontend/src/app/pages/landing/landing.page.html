@@ -1,0 +1,26 @@
+<mat-toolbar class="landing-toolbar">
+  <span class="landing-toolbar__brand">AddressBook</span>
+  <span class="landing-toolbar__spacer"></span>
+  <a mat-button routerLink="/login">Sign in</a>
+  <a mat-button routerLink="/contacts">Contacts</a>
+</mat-toolbar>
+
+<section class="landing-hero">
+  <div class="landing-hero__content">
+    <p class="landing-hero__eyebrow">Simple and intuitive</p>
+    <h1>Keep your contacts in one place</h1>
+    <p class="landing-hero__text">
+      A small address book app with basic contact management.
+    </p>
+
+    <div class="landing-hero__actions">
+      <a mat-raised-button color="primary" routerLink="/login">Get started</a>
+      <a mat-stroked-button routerLink="/contacts">Open contacts</a>
+    </div>
+  </div>
+
+  <mat-card class="landing-summary">
+    <h2>Why use AddressBook?</h2>
+    <p>Store and organize your contacts in a simple and structured way.</p>
+  </mat-card>
+</section>
